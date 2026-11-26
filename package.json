@@ -1,0 +1,34 @@
+{
+  "name": "sec-form-d-funding-signals",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "US Startup Funding Signals — SEC Form D API (Zero-PII). Extract newly funded US operating startups directly from official SEC EDGAR XML filings with pooled-fund filtering, funding stage inference, and zero-charge protection.",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "node src/main.js",
+    "test": "node test/e2e.test.js",
+    "canary": "node test/e2e.test.js --canary"
+  },
+  "dependencies": {
+    "apify": "^3.4.2"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "keywords": [
+    "apify",
+    "sec-edgar",
+    "form-d",
+    "startup-funding",
+    "crunchbase-alternative",
+    "venture-capital",
+    "gtm",
+    "buying-signals",
+    "revops",
+    "clay",
+    "n8n",
+    "sales-intelligence",
+    "zero-pii"
+  ],
+  "license": "MIT"
+}

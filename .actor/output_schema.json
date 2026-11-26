@@ -1,0 +1,14 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "US Startup Funding Signals (SEC Form D) Output",
+  "description": "Zero-PII corporate startup funding signals extracted from official SEC EDGAR Form D XML filings, enriched with offering metrics and B2B GTM buying signals.",
+  "type": "object",
+  "properties": {
+    "results": {
+      "type": "string",
+      "title": "Startup Funding Signals Dataset",
+      "description": "Structured dataset containing newly funded US operating startups with offering amounts, amount sold, industry group, incorporation year, and inferred funding stage.",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+    }
+  }
+}

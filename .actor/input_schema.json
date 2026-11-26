@@ -1,0 +1,75 @@
+{
+  "title": "US Startup Funding Signals — SEC Form D Input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "daysBack": {
+      "title": "Lookback Window (Days Back)",
+      "type": "integer",
+      "description": "Number of calendar days back from today to scan SEC EDGAR Form D filings (e.g. 7 scans the past 7 days).",
+      "minimum": 1,
+      "maximum": 365,
+      "default": 7,
+      "prefill": 7
+    },
+    "maxResults": {
+      "title": "Max Startup Signals Returned",
+      "type": "integer",
+      "description": "Maximum number of matching startup funding records to extract and return. Default prefill (15) completes in ~5-8 seconds while respecting SEC EDGAR rate limits.",
+      "minimum": 1,
+      "maximum": 1000,
+      "default": 25,
+      "prefill": 15
+    },
+    "minOfferingAmountUsd": {
+      "title": "Minimum Total Offering Amount (USD)",
+      "type": "integer",
+      "description": "Minimum total offering size in USD (`totalOfferingAmountUsd`). Filters out micro/token filings.",
+      "minimum": 0,
+      "default": 100000,
+      "prefill": 100000
+    },
+    "minAmountSoldUsd": {
+      "title": "Minimum Amount Already Sold (USD)",
+      "type": "integer",
+      "description": "Minimum capital already closed/sold in USD (`totalAmountSoldUsd`). Set > 0 to exclude offerings with $0 closed so far.",
+      "minimum": 0,
+      "default": 0,
+      "prefill": 0
+    },
+    "excludePooledInvestmentFunds": {
+      "title": "Exclude Pooled Investment / VC / Hedge Funds",
+      "type": "boolean",
+      "description": "Key GTM Filter: Automatically removes ~70% of SEC Form D noise (Hedge Funds, Private Equity Funds, Venture Capital Funds, and 3(c)(1)/3(c)(7) pooled vehicles) so you ONLY get real operating startups!",
+      "default": true
+    },
+    "industries": {
+      "title": "Target Industries (Optional Filter)",
+      "type": "array",
+      "description": "Optional list of SEC Form D industry groups to match (case-insensitive, supports partial match e.g. 'Technology', 'Computers', 'Telecommunications', 'Biotechnology', 'Health Care'). Leave empty to return all operating industries.",
+      "editor": "stringList",
+      "default": []
+    },
+    "states": {
+      "title": "Target US States / Countries (Optional Filter)",
+      "type": "array",
+      "description": "Optional list of 2-letter issuer state/country codes (e.g. ['CA', 'NY', 'TX', 'MA', 'WA', 'DE']). Leave empty for all states.",
+      "editor": "stringList",
+      "default": []
+    },
+    "includeAmendments": {
+      "title": "Include Form D/A Amendments",
+      "type": "boolean",
+      "description": "If enabled, includes both initial Form D filings and Form D/A amendments (follow-on closes or expanded rounds). Disable to strictly return brand-new Form D filings.",
+      "default": true
+    },
+    "searchQuery": {
+      "title": "Keyword / Company Search Query (Optional)",
+      "type": "string",
+      "description": "Optional keyword, company name, or CIK filter (e.g. 'AI', 'Therapeutics', 'Robotics'). Matched strictly against Zero-PII corporate fields.",
+      "editor": "textfield",
+      "default": ""
+    }
+  },
+  "required": []
+}

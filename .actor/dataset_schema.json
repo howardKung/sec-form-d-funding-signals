@@ -1,0 +1,68 @@
+{
+  "actorSpecification": 1,
+  "fields": {},
+  "views": {
+    "overview": {
+      "title": "US Startup Funding Signals Overview (Zero-PII)",
+      "transformation": {
+        "fields": [
+          "companyName",
+          "issuerStateOrCountry",
+          "industryGroupType",
+          "formType",
+          "filingDate",
+          "dateOfFirstSale",
+          "fundingMetrics",
+          "gtmSignals",
+          "secFilingUrl",
+          "charged"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "companyName": {
+            "label": "Company Name",
+            "format": "text"
+          },
+          "issuerStateOrCountry": {
+            "label": "State / Country",
+            "format": "text"
+          },
+          "industryGroupType": {
+            "label": "Industry Group",
+            "format": "text"
+          },
+          "formType": {
+            "label": "Form",
+            "format": "text"
+          },
+          "filingDate": {
+            "label": "Filing Date",
+            "format": "text"
+          },
+          "dateOfFirstSale": {
+            "label": "First Sale Date",
+            "format": "text"
+          },
+          "fundingMetrics": {
+            "label": "Funding Metrics (USD)",
+            "format": "object"
+          },
+          "gtmSignals": {
+            "label": "GTM Signals",
+            "format": "object"
+          },
+          "secFilingUrl": {
+            "label": "SEC Form D XML",
+            "format": "link"
+          },
+          "charged": {
+            "label": "Charged",
+            "format": "boolean"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+name: Daily SEC Form D Canary Health Check
+
+on:
+  schedule:
+    # Run every day at 06:30 UTC to verify SEC EDGAR EFTS & Form D XML parsing remain healthy
+    - cron: '30 6 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  canary-e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Run Real SEC Form D E2E & Zero-PII Canary Test
+        run: npm test

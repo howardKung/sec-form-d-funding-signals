@@ -1,0 +1,16 @@
+{
+  "actorSpecification": 1,
+  "name": "sec-form-d-funding-signals",
+  "title": "US Startup Funding Signals — SEC Form D API (Zero-PII)",
+  "description": "Extract newly funded US operating startups directly from official SEC EDGAR Form D XML filings. Automatically filters out pooled hedge/VC/PE funds, infers funding stage & Reg D 506(b)/506(c) GTM signals, enforces mathematical Zero-PII compliance, and includes Zero-Charge Protection.",
+  "version": "1.0",
+  "meta": {
+    "templateId": "js-empty"
+  },
+  "input": "./input_schema.json",
+  "output": "./output_schema.json",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
+  "dockerfile": "../Dockerfile"
+}
