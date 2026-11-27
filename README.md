@@ -92,8 +92,8 @@ Combine all three **Zero-Browser, Zero-PII, Zero-Charge-Protected** signal engin
 | Step | Apify Actor | Signal Captured | Best Used For |
 | :---: | :--- | :--- | :--- |
 | **1. Capital Trigger** | **`howardkung/sec-form-d-funding-signals`** *(This Actor)* | Fresh US startup Form D funding rounds (`$100K–$100M+`), stage, state & industry | Discovering newly capitalized startups 30–90 days before Crunchbase |
-| **2. Hiring Velocity** | [**`howardkung/multi-ats-hiring-signals`**](https://apify.com/howardkung/multi-ats-hiring-signals) | Open roles, 30-day hiring velocity, department breakdown & 60+ job-description tech signals across 8 ATS platforms | Confirming which newly funded startups are actively scaling Engineering, Sales, or Security |
-| **3. Tech & Deliverability** | **`howardkung/domain-dns-tech-trust-signals`** | DNS `MX/SPF/DMARC` email gateway, infrastructure stack, and deterministic `CNAME` Trust Center detection (Vanta, Drata, SafeBase) | Verifying email deliverability, security compliance maturity, and cloud stack before outreach |
+| **2. Hiring Velocity** | [**`howardkung/multi-ats-hiring-signals-api-zero-pii`**](https://apify.com/howardkung/multi-ats-hiring-signals-api-zero-pii) | Open roles, 30-day hiring velocity, department breakdown & 60+ job-description tech signals across 8 ATS platforms | Confirming which newly funded startups are actively scaling Engineering, Sales, or Security |
+| **3. Tech & Deliverability** | **`howardkung/company-dns-email-auth-tech-stack-signals-zero-pii`** | DNS `MX/SPF/DMARC` email gateway, infrastructure stack, and deterministic `CNAME` Trust Center detection (Vanta, Drata, SafeBase) | Verifying email deliverability, security compliance maturity, and cloud stack before outreach |
 
 ### 3-Step n8n / Clay Automated Waterfall
 1. **Schedule Daily at 08:00 EST**: Run `sec-form-d-funding-signals` (`daysBack: 1`, `excludePooledInvestmentFunds: true`, `minOfferingAmountUsd: 500000`, `industries: ["Technology", "Biotechnology"]`).
@@ -123,10 +123,10 @@ Get daily Slack and Google Sheets alerts whenever a US operating startup files a
 | Signal Engine | Best Used For | Apify Store | Ready n8n JSON |
 | :--- | :--- | :--- | :--- |
 | **US Startup Funding (SEC Form D)** *(This Actor)* | Newly funded US operating startups (pooled funds filtered out) | [Apify](https://apify.com/howardkung/sec-form-d-funding-signals) | [`examples/n8n-workflow.json`](./examples/n8n-workflow.json) |
-| **Multi-ATS Hiring Signals** | Open roles, 30d velocity & GTM buying signals across 8 ATS APIs | [Apify](https://apify.com/howardkung/multi-ats-hiring-signals) | [GitHub](https://github.com/howardKung/multi-ats-hiring-signals/blob/main/examples/n8n-workflow.json) |
-| **DNS, Email-Auth & Tech Stack** | MX/SPF/DMARC cold-email safety, Proofpoint/Mimecast & 85+ DNS tools | [Apify](https://apify.com/howardkung/domain-dns-tech-trust-signals) | [GitHub](https://github.com/howardKung/domain-dns-tech-trust-signals/blob/main/examples/n8n-workflow.json) |
-| **Shopify & WooCommerce Store Intel** | DTC platform, 30+ paid apps (Klaviyo, Recharge, Yotpo) & pricing | [Apify](https://apify.com/howardkung/ecommerce-store-app-intel) | [GitHub](https://github.com/howardKung/ecommerce-store-app-intel/blob/main/examples/n8n-workflow.json) |
-| **SEC Form 4 Insider Cluster Buys** | Open-market C-suite stock purchases (`Code P` only) & cluster alerts | [Apify](https://apify.com/howardkung/sec-form4-insider-cluster-buys) | [GitHub](https://github.com/howardKung/sec-form4-insider-cluster-buys/blob/main/examples/n8n-workflow.json) |
+| **Multi-ATS Hiring Signals** | Open roles, 30d velocity & GTM buying signals across 8 ATS APIs | [Apify](https://apify.com/howardkung/multi-ats-hiring-signals-api-zero-pii) | [GitHub](https://github.com/howardKung/multi-ats-hiring-signals/blob/main/examples/n8n-workflow.json) |
+| **DNS, Email-Auth & Tech Stack** | MX/SPF/DMARC cold-email safety, Proofpoint/Mimecast & 85+ DNS tools | [Apify](https://apify.com/howardkung/company-dns-email-auth-tech-stack-signals-zero-pii) | [GitHub](https://github.com/howardKung/domain-dns-tech-trust-signals/blob/main/examples/n8n-workflow.json) |
+| **Shopify & WooCommerce Store Intel** | DTC platform, 30+ paid apps (Klaviyo, Recharge, Yotpo) & pricing | [Apify](https://apify.com/howardkung/ecommerce-store-app-intel-api-zero-pii) | [GitHub](https://github.com/howardKung/ecommerce-store-app-intel/blob/main/examples/n8n-workflow.json) |
+| **SEC Form 4 Insider Cluster Buys** | Open-market C-suite stock purchases (`Code P` only) & cluster alerts | [Apify](https://apify.com/howardkung/sec-form4-insider-cluster-buys-api-zero-pii) | [GitHub](https://github.com/howardKung/sec-form4-insider-cluster-buys/blob/main/examples/n8n-workflow.json) |
 
 ---
 
