@@ -128,3 +128,8 @@ Get daily Slack and Google Sheets alerts whenever a US operating startup files a
 | **Shopify & WooCommerce Store Intel** | DTC platform, 30+ paid apps (Klaviyo, Recharge, Yotpo) & pricing | [Apify](https://apify.com/howardkung/ecommerce-store-app-intel) | [GitHub](https://github.com/howardKung/ecommerce-store-app-intel/blob/main/examples/n8n-workflow.json) |
 | **SEC Form 4 Insider Cluster Buys** | Open-market C-suite stock purchases (`Code P` only) & cluster alerts | [Apify](https://apify.com/howardkung/sec-form4-insider-cluster-buys) | [GitHub](https://github.com/howardKung/sec-form4-insider-cluster-buys/blob/main/examples/n8n-workflow.json) |
 
+---
+
+### 🛡️ Stop Runaway n8n & LLM Bills — AgentGuard Pro Kit
+Running automated B2B / SEC enrichment pipelines in **n8n**? Protect your OpenAI/Anthropic budget with PostgreSQL atomic `FOR UPDATE` spend caps, exponential-backoff webhook DLQ recovery, and a **1-click White-Label Client ROI Dashboard**:
+👉 **[Get AgentGuard Pro Kit on Gumroad ($49 Solo / $89 Agency Unlimited) ↗](https://howardk1.gumroad.com/l/agentguard-pro-kit)** | **[Free n8n Starter Workflows ↗](https://github.com/howardKung/agentguard-kit)**
