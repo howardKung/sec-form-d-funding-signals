@@ -1,0 +1,255 @@
+{
+  "name": "SEC Form D Newly Funded US Startups -> Slack / Telegram / Google Sheets",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## SEC Form D Newly Funded US Startups Automation\n\nCatch freshly funded operating US startups straight from SEC EDGAR Form D filings — weeks before Crunchbase/TechCrunch — with **Pooled VC/Hedge Funds removed**, **Mathematical Zero-PII**, and **Zero-Charge Protection**.\n\n**Setup (2 Minutes):**\n1. Set `APIFY_API_TOKEN`\n2. Set `SLACK_WEBHOOK_URL` or Telegram Bot / Google Sheets credentials\n3. Adjust `minOfferingAmountUsd`, `industries`, or `states`\n\nActor page: https://apify.com/howardkung/sec-form-d-funding-signals",
+        "height": 280,
+        "width": 440,
+        "color": 6
+      },
+      "id": "note-formd-guide",
+      "name": "Workflow Setup Guide",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -380,
+        -60
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "days",
+              "daysInterval": 1,
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      },
+      "id": "trigger-formd-daily",
+      "name": "Schedule: Daily SEC Form D Scan",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        140,
+        120
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.apify.com/v2/acts/howardkung~sec-form-d-funding-signals/run-sync-get-dataset-items?token={{ $env.APIFY_API_TOKEN }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"daysBack\": 2,\n  \"maxResults\": 25,\n  \"minOfferingAmountUsd\": 500000,\n  \"minAmountSoldUsd\": 100000,\n  \"excludePooledInvestmentFunds\": true,\n  \"industries\": [\"Technology\", \"Computers\", \"Biotechnology\", \"Health Care\"],\n  \"states\": [],\n  \"includeAmendments\": true\n}",
+        "options": {
+          "timeout": 120000
+        }
+      },
+      "id": "http-run-formd-actor",
+      "name": "Apify: SEC Form D Funding Signals",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        400,
+        120
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "cond-formd-fresh",
+              "leftValue": "={{ $json.gtmSignals?.isFreshFirstSale }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "cond-formd-sold",
+              "leftValue": "={{ $json.fundingMetrics?.totalAmountSoldUsd }}",
+              "rightValue": 250000,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "if-formd-high-value",
+      "name": "IF: Fresh Round >= $250K Closed",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        660,
+        120
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.SLACK_WEBHOOK_URL || 'https://hooks.slack.com/services/REPLACE/ME/WEBHOOK' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"text\": \":moneybag: *Fresh US Startup Form D Filing:* \" + $json.companyName + \" (\" + $json.issuerStateOrCountry + \")\\n• Industry: \" + $json.industryGroupType + \" | Stage: \" + ($json.gtmSignals?.inferredStage || 'Unknown') + \"\\n• Offering: $\" + ($json.fundingMetrics?.totalOfferingAmountUsd || 0).toLocaleString() + \" | Closed: $\" + ($json.fundingMetrics?.totalAmountSoldUsd || 0).toLocaleString() + \"\\n• Filing Date: \" + $json.filingDate + \"\\n• SEC XML: \" + $json.secFilingUrl\n}",
+        "options": {
+          "ignoreResponseCode": true,
+          "timeout": 10000
+        }
+      },
+      "id": "slack-notify-formd",
+      "name": "Notify Slack: Newly Funded Startup",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        940,
+        20
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $env.GOOGLE_SHEET_ID || 'REPLACE_WITH_GOOGLE_SHEET_ID' }}"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "FundedStartups"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "companyName": "={{ $json.companyName }}",
+            "state": "={{ $json.issuerStateOrCountry }}",
+            "industry": "={{ $json.industryGroupType }}",
+            "inferredStage": "={{ $json.gtmSignals?.inferredStage }}",
+            "totalOfferingAmountUsd": "={{ $json.fundingMetrics?.totalOfferingAmountUsd }}",
+            "totalAmountSoldUsd": "={{ $json.fundingMetrics?.totalAmountSoldUsd }}",
+            "filingDate": "={{ $json.filingDate }}"
+          }
+        },
+        "options": {}
+      },
+      "id": "sheets-log-formd",
+      "name": "Google Sheets: Log Funded Startups",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        940,
+        200
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "noop-formd-skip",
+      "name": "Skip Smaller / Older Filing",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        940,
+        360
+      ]
+    }
+  ],
+  "connections": {
+    "Schedule: Daily SEC Form D Scan": {
+      "main": [
+        [
+          {
+            "node": "Apify: SEC Form D Funding Signals",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Apify: SEC Form D Funding Signals": {
+      "main": [
+        [
+          {
+            "node": "IF: Fresh Round >= $250K Closed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF: Fresh Round >= $250K Closed": {
+      "main": [
+        [
+          {
+            "node": "Notify Slack: Newly Funded Startup",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Google Sheets: Log Funded Startups",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Skip Smaller / Older Filing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1",
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": [
+    {
+      "name": "Apify"
+    },
+    {
+      "name": "SEC Form D"
+    },
+    {
+      "name": "Startup Funding"
+    }
+  ]
+}

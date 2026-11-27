@@ -107,3 +107,24 @@ Combine all three **Zero-Browser, Zero-PII, Zero-Charge-Protected** signal engin
 - **Data Source**: Public-domain US Federal filings via official SEC EDGAR (`efts.sec.gov` & `www.sec.gov/Archives/edgar/data`).
 - **Rate Limiting**: Built-in serialized token-bucket rate limiter strictly enforces `<= 4 req/sec` (well below SEC EDGAR's `10 req/sec` Fair Access ceiling) with compliant `User-Agent` identification and exponential retry backoff.
 - **Zero-PII Architecture**: Strictly outputs corporate issuer metadata and aggregate round economics. Zero executive names, zero residential/street addresses, zero phone numbers, and zero email addresses are ever stored or returned.
+
+---
+
+## ⚡ Ready-to-Import n8n Automation Workflow
+
+Get daily Slack and Google Sheets alerts whenever a US operating startup files a fresh SEC Form D round:
+
+1. Download or copy [`examples/n8n-workflow.json`](./examples/n8n-workflow.json) from this repository.
+2. In **n8n**, click **Workflows → Import from File** (or paste the JSON directly onto the canvas).
+3. Set `APIFY_API_TOKEN` (plus `SLACK_WEBHOOK_URL` or Google Sheets credential) and activate the daily 08:00 schedule!
+
+### 🔗 Complete `howardkung` Zero-PII Signal Suite (Cross-Actor Matrix)
+
+| Signal Engine | Best Used For | Apify Store | Ready n8n JSON |
+| :--- | :--- | :--- | :--- |
+| **US Startup Funding (SEC Form D)** *(This Actor)* | Newly funded US operating startups (pooled funds filtered out) | [Apify](https://apify.com/howardkung/sec-form-d-funding-signals) | [`examples/n8n-workflow.json`](./examples/n8n-workflow.json) |
+| **Multi-ATS Hiring Signals** | Open roles, 30d velocity & GTM buying signals across 8 ATS APIs | [Apify](https://apify.com/howardkung/multi-ats-hiring-signals) | [GitHub](https://github.com/howardKung/multi-ats-hiring-signals/blob/main/examples/n8n-workflow.json) |
+| **DNS, Email-Auth & Tech Stack** | MX/SPF/DMARC cold-email safety, Proofpoint/Mimecast & 85+ DNS tools | [Apify](https://apify.com/howardkung/domain-dns-tech-trust-signals) | [GitHub](https://github.com/howardKung/domain-dns-tech-trust-signals/blob/main/examples/n8n-workflow.json) |
+| **Shopify & WooCommerce Store Intel** | DTC platform, 30+ paid apps (Klaviyo, Recharge, Yotpo) & pricing | [Apify](https://apify.com/howardkung/ecommerce-store-app-intel) | [GitHub](https://github.com/howardKung/ecommerce-store-app-intel/blob/main/examples/n8n-workflow.json) |
+| **SEC Form 4 Insider Cluster Buys** | Open-market C-suite stock purchases (`Code P` only) & cluster alerts | [Apify](https://apify.com/howardkung/sec-form4-insider-cluster-buys) | [GitHub](https://github.com/howardKung/sec-form4-insider-cluster-buys/blob/main/examples/n8n-workflow.json) |
+
